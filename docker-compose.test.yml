@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mindflow_test
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+
+  web:
+    build: .
+    command: ["rails", "test"]
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      - db
+    env_file:
+      - .env.test
+    restart: "no"
+
+volumes:
+  postgres_test_data:
+  bundle_cache:
