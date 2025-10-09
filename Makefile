@@ -16,11 +16,6 @@ help: ## Mostra esta ajuda
 
 start: ## Inicia a aplicação (build + install + start)
 	@echo "🚀 Iniciando Mindflow..."
-	$(COMPOSE) down
-	$(COMPOSE) build
-	$(BUNDLE) install
-	$(RAILS) db:create
-	$(RAILS) db:migrate
 	$(COMPOSE) up
 
 dev: ## Inicia em modo desenvolvimento
@@ -35,10 +30,6 @@ restart: ## Reinicia a aplicação
 	@echo "🔄 Reiniciando aplicação..."
 	$(MAKE) stop
 	$(MAKE) start
-
-build: ## Constrói as imagens Docker
-	@echo "🔨 Construindo imagens..."
-	$(COMPOSE) build
 
 clean: ## Remove containers, volumes e imagens
 	@echo "🧹 Limpando containers e volumes..."
@@ -278,7 +269,7 @@ dev-setup: ## Configura ambiente de desenvolvimento
 	$(MAKE) db-seed
 
 # Comandos de produção
-prod-setup: ## Configura ambiente de produção
+build: ## Configura ambiente de produção
 	@echo "🚀 Configurando ambiente de produção..."
 	$(MAKE) build
 	$(MAKE) db-create

@@ -23,5 +23,10 @@ module App
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    
+    # Configuração de idioma
+    config.i18n.default_locale = :pt
+    config.i18n.available_locales = [:pt, :en]
+    config.time_zone = 'Brasilia'
   end
 end

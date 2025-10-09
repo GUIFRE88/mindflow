@@ -13,7 +13,10 @@ Rails.application.routes.draw do
 
   # Dashboard
   get "dashboard", to: "dashboard#index"
-  
+
+  # Agenda
+  get "agenda", to: "agenda#index"
+
   # Defines the root path route ("/")
   root "dashboard#index"
 end
