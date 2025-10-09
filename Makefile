@@ -52,6 +52,10 @@ shell: ## Abre shell no container web
 	@echo "🐚 Abrindo shell..."
 	$(COMPOSE) run --rm web bash
 
+bash: ## Abre bash no container web (alias para shell)
+	@echo "🐚 Abrindo bash..."
+	$(COMPOSE) run --rm web bash
+
 console: ## Abre console Rails
 	@echo "💻 Abrindo console Rails..."
 	$(RAILS) console
@@ -329,6 +333,7 @@ examples: ## Mostra exemplos de uso
 	@echo "make restart                  # Reinicia a aplicação"
 	@echo "make logs                     # Mostra logs"
 	@echo "make shell                    # Abre shell no container"
+	@echo "make bash                     # Abre bash no container"
 	@echo "make console                  # Abre console Rails"
 	@echo "make db-create                # Cria banco de dados"
 	@echo "make db-migrate               # Executa migrações"
