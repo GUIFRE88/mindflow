@@ -1,0 +1,41 @@
+pt:
+  activerecord:
+    models:
+      patient:
+        one: "Paciente"
+        other: "Pacientes"
+    attributes:
+      patient:
+        id: "ID"
+        user_id: "Usuário"
+        name: "Nome"
+        email: "E-mail"
+        phone: "Telefone"
+        birth_date: "Data de Nascimento"
+        notes: "Observações"
+        status: "Status"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+        age: "Idade"
+        full_name: "Nome Completo"
+        display_name: "Nome para Exibição"
+    errors:
+      models:
+        patient:
+          attributes:
+            name:
+              blank: "não pode ficar em branco"
+              too_short: "é muito curto (mínimo %{count} caracteres)"
+              too_long: "é muito longo (máximo %{count} caracteres)"
+            email:
+              blank: "não pode ficar em branco"
+              invalid: "não é um e-mail válido"
+              taken: "já está em uso"
+            phone:
+              blank: "não pode ficar em branco"
+              invalid: "deve estar no formato (11) 99999-9999"
+            birth_date:
+              blank: "não pode ficar em branco"
+            status:
+              blank: "não pode ficar em branco"
+              inclusion: "não está incluído na lista"

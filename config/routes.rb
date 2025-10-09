@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'dashboard/index'
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations'
@@ -16,6 +15,9 @@ Rails.application.routes.draw do
 
   # Agenda
   get "agenda", to: "agenda#index"
+
+  # Patients
+  resources :patients
 
   # Defines the root path route ("/")
   root "dashboard#index"

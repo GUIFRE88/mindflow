@@ -1,0 +1,89 @@
+<!-- Header -->
+<div class="patients-header">
+  <div class="header-content">
+    <h1 class="page-title">Novo Paciente</h1>
+    <div class="header-actions">
+      <svg class="header-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+      </svg>
+      <svg class="header-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- Form -->
+<div class="patient-form-container">
+  <%= form_with model: @patient, local: true, class: "patient-form" do |f| %>
+    <% if @patient.errors.any? %>
+      <div class="form-errors">
+        <h3>Por favor, corrija os seguintes erros:</h3>
+        <ul>
+          <% @patient.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= f.label :name, "Nome Completo", class: "form-label" %>
+        <%= f.text_field :name, 
+                         placeholder: "Digite o nome completo do paciente",
+                         class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= f.label :email, "E-mail", class: "form-label" %>
+        <%= f.email_field :email, 
+                          placeholder: "paciente@email.com",
+                          class: "form-control" %>
+      </div>
+      
+      <div class="form-group">
+        <%= f.label :phone, "Telefone", class: "form-label" %>
+        <%= f.text_field :phone, 
+                         placeholder: "(11) 99999-9999",
+                         class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= f.label :birth_date, "Data de Nascimento", class: "form-label" %>
+        <%= f.date_field :birth_date, 
+                         class: "form-control" %>
+      </div>
+      
+      <div class="form-group">
+        <%= f.label :status, "Status", class: "form-label" %>
+        <%= f.select :status, 
+                     options_for_select([
+                       ['Ativo', 'active'],
+                       ['Encerrado', 'closed']
+                     ], @patient.status || 'active'),
+                     {},
+                     { class: "form-control" } %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group full-width">
+        <%= f.label :notes, "Observações", class: "form-label" %>
+        <%= f.text_area :notes, 
+                        placeholder: "Observações sobre o paciente, histórico, etc.",
+                        rows: 4,
+                        class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= link_to "Cancelar", patients_path, class: "btn-secondary" %>
+      <%= f.submit "Salvar Paciente", class: "btn-primary" %>
+    </div>
+  <% end %>
+</div>

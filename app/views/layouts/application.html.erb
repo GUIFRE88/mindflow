@@ -38,12 +38,12 @@
               Agenda
             <% end %>
             
-            <a href="#" class="nav-item">
+            <%= link_to patients_path, class: "nav-item #{'active' if current_page?(patients_path)}" do %>
               <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H16c-.8 0-1.54.5-1.85 1.26L12.5 14H10v4h2v6h4z"/>
               </svg>
               Pacientes
-            </a>
+            <% end %>
             
             <a href="#" class="nav-item">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
