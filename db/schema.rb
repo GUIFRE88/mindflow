@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_10_09_102439) do
+ActiveRecord::Schema[7.1].define(version: 2025_10_13_103414) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,6 +29,26 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_09_102439) do
     t.index ["user_id"], name: "index_patients_on_user_id"
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "patient_id", null: false
+    t.date "session_date", null: false
+    t.time "start_time", null: false
+    t.time "end_time", null: false
+    t.string "session_type", default: "presencial", null: false
+    t.text "notes"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "confirmed", default: false, null: false
+    t.index ["patient_id"], name: "index_sessions_on_patient_id"
+    t.index ["session_date", "start_time", "user_id"], name: "index_sessions_on_session_date_and_start_time_and_user_id", unique: true
+    t.index ["session_date"], name: "index_sessions_on_session_date"
+    t.index ["session_type"], name: "index_sessions_on_session_type"
+    t.index ["status"], name: "index_sessions_on_status"
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -44,4 +64,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_10_09_102439) do
   end
 
   add_foreign_key "patients", "users"
+  add_foreign_key "sessions", "patients"
+  add_foreign_key "sessions", "users"
 end

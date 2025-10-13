@@ -1,5 +1,6 @@
 class Patient < ApplicationRecord
   belongs_to :user
+  has_many :sessions, dependent: :destroy
 
   # Enum para status
   enum status: { active: 0, closed: 1 }

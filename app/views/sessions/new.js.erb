@@ -1,0 +1,13 @@
+// Abre o modal
+document.getElementById('sessionModal').style.display = 'flex';
+
+// Adiciona o modal ao body se não existir
+if (!document.getElementById('sessionModal')) {
+  document.body.insertAdjacentHTML('beforeend', '<%= j render "new" %>');
+}
+
+// Foca no primeiro campo
+setTimeout(() => {
+  const firstInput = document.querySelector('#sessionModal .form-select, #sessionModal .form-input');
+  if (firstInput) firstInput.focus();
+}, 100);

@@ -1,0 +1,108 @@
+<!-- Header -->
+<div class="patients-header">
+  <div class="header-content">
+    <h1 class="page-title">Editar Sessão</h1>
+    <div class="header-actions">
+      <svg class="header-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+      </svg>
+      <svg class="header-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- Form -->
+<div class="patient-form-container">
+  <%= form_with model: @session, local: true, class: "patient-form" do |form| %>
+    <% if @session.errors.any? %>
+      <div class="form-errors">
+        <h3>Por favor, corrija os seguintes erros:</h3>
+        <ul>
+          <% @session.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= form.label :patient_id, "Paciente", class: "form-label" %>
+        <%= form.select :patient_id, 
+            options_from_collection_for_select(@patients, :id, :name, @session.patient_id),
+            { prompt: "Selecione um paciente" },
+            { class: "form-control", required: true } %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= form.label :session_date, "Data", class: "form-label" %>
+        <%= form.date_field :session_date, class: "form-control", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :session_type, "Tipo", class: "form-label" %>
+        <%= form.select :session_type, 
+            options_for_select([
+              ['Presencial', 'presencial'],
+              ['Online', 'online']
+            ], @session.session_type),
+            { prompt: "Selecione o tipo" },
+            { class: "form-control", required: true } %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= form.label :start_time, "Hora de Início", class: "form-label" %>
+        <%= form.time_field :start_time, class: "form-control", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :end_time, "Hora de Fim", class: "form-label" %>
+        <%= form.time_field :end_time, class: "form-control", required: true %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group full-width">
+        <%= form.label :notes, "Anotações", class: "form-label" %>
+        <%= form.text_area :notes, 
+            placeholder: "Anotações sobre a sessão...",
+            rows: 4,
+            class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Status de Confirmação</label>
+        <div class="confirmation-badge <%= @session.confirmed? ? 'confirmed' : 'pending' %>">
+          <%= @session.confirmed? ? 'Confirmada' : 'Pendente' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= link_to "Cancelar", agenda_path, class: "btn-secondary" %>
+      <%= link_to @session, method: :delete, 
+          class: "btn-danger", 
+          data: { confirm: 'Tem certeza que deseja excluir esta sessão?' } do %>
+        Excluir
+      <% end %>
+      <% if @session.confirmed? %>
+        <%= link_to unconfirm_session_path(@session), method: :patch, class: "btn-warning" do %>
+          Desconfirmar
+        <% end %>
+      <% else %>
+        <%= link_to confirm_session_path(@session), method: :patch, class: "btn-success" do %>
+          Confirmar
+        <% end %>
+      <% end %>
+      <%= form.submit "Salvar", class: "btn-primary" %>
+    </div>
+  <% end %>
+</div>

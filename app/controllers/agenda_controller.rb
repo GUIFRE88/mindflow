@@ -1,6 +1,7 @@
 class AgendaController < ApplicationController
   before_action :authenticate_user!
   before_action :set_agenda_service
+  before_action :set_patients, only: [:index]
 
   def index
     calendar_data = @agenda_service.get_week_calendar(params[:date])
@@ -18,7 +19,7 @@ class AgendaController < ApplicationController
     @agenda_service = AgendaService.new(current_user)
   end
 
-  def session_params
-    params.require(:session).permit(:patient_name, :session_type, :date, :time, :status)
+  def set_patients
+    @patients = current_user.patients.active.order(:name)
   end
 end

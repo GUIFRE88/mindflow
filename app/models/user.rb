@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   # Associations
   has_many :patients, dependent: :destroy
+  has_many :sessions, dependent: :destroy
 
   # Validations
   validates :first_name, presence: true, length: { minimum: 2, maximum: 50 }

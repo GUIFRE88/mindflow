@@ -15,6 +15,12 @@ Rails.application.routes.draw do
 
   # Agenda
   get "agenda", to: "agenda#index"
+  resources :sessions, path: 'agenda/sessions' do
+    member do
+      patch :confirm
+      patch :unconfirm
+    end
+  end
 
   # Patients
   resources :patients

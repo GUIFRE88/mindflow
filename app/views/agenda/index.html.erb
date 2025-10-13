@@ -27,12 +27,12 @@
       <% end %>
     </div>
     
-    <button class="new-session-btn">
+    <%= link_to new_session_path, class: "new-session-btn" do %>
       <svg viewBox="0 0 24 24" fill="currentColor">
         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
       </svg>
       Nova Sessão
-    </button>
+    <% end %>
   </div>
 </div>
 
@@ -65,10 +65,13 @@
               <!-- Verificar se há sessão neste horário -->
               <% session = @sessions.find { |s| s[:date] == day && s[:time].strftime("%H:%M") == time_slot.strftime("%H:%M") } %>
               <% if session %>
-                <div class="session-block <%= session[:session_type] %>" data-session-id="<%= session[:id] %>">
+                <%= link_to edit_session_path(session[:id]), class: "session-block #{session[:session_type]}" do %>
                   <div class="session-patient"><%= session[:patient_name] %></div>
                   <div class="session-type"><%= session[:session_type].capitalize %></div>
-                </div>
+                  <% if session[:confirmed] %>
+                    <div class="session-confirmed">✓ Confirmada</div>
+                  <% end %>
+                <% end %>
               <% end %>
             </div>
           <% end %>
@@ -77,3 +80,5 @@
     </div>
   </div>
 </div>
+
+
