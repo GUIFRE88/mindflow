@@ -6,8 +6,7 @@ class Patient < ApplicationRecord
 
   # Validações
   validates :name, presence: true, length: { minimum: 2, maximum: 100 }
-  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: { scope: :user_id }
-  validates :birth_date, presence: true
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: { scope: :user_id }, allow_blank: true
   validates :status, presence: true
 
   # Scopes
