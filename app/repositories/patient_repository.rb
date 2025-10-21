@@ -11,6 +11,10 @@ class PatientRepository
     @user.patients.find(id)
   end
 
+  def find_patient(id)
+    Patient.find(id)
+  end
+
   def search(query)
     return all if query.blank?
     

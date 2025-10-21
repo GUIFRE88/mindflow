@@ -15,7 +15,7 @@
 
 <!-- Form -->
 <div class="patient-form-container">
-  <%= form_with model: @session, local: true, class: "patient-form" do |form| %>
+  <%= form_tag appointments_path, method: :post, local: true, class: "patient-form", id: "new-session-form-#{Time.current.to_i}", data: { turbo: false } do %>
     <% if @session.errors.any? %>
       <div class="form-errors">
         <h3>Por favor, corrija os seguintes erros:</h3>
@@ -29,48 +29,46 @@
 
     <div class="form-row">
       <div class="form-group">
-        <%= form.label :patient_id, "Paciente", class: "form-label" %>
-        <%= form.select :patient_id, 
+        <%= label_tag :patient_id, "Paciente", class: "form-label" %>
+        <%= select_tag "session[patient_id]", 
             options_from_collection_for_select(@patients, :id, :name, @session.patient_id),
-            { prompt: "Selecione um paciente" },
-            { class: "form-control", required: true } %>
+            { prompt: "Selecione um paciente", class: "form-control", required: true } %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group">
-        <%= form.label :session_date, "Data", class: "form-label" %>
-        <%= form.date_field :session_date, class: "form-control", required: true %>
+        <%= label_tag :session_date, "Data", class: "form-label" %>
+        <%= date_field_tag "session[session_date]", @session.session_date, class: "form-control", required: true %>
       </div>
 
       <div class="form-group">
-        <%= form.label :session_type, "Tipo", class: "form-label" %>
-        <%= form.select :session_type, 
+        <%= label_tag :session_type, "Tipo", class: "form-label" %>
+        <%= select_tag "session[session_type]", 
             options_for_select([
               ['Presencial', 'presencial'],
               ['Online', 'online']
             ], @session.session_type),
-            { prompt: "Selecione o tipo" },
-            { class: "form-control", required: true } %>
+            { prompt: "Selecione o tipo", class: "form-control", required: true } %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group">
-        <%= form.label :start_time, "Hora de Início", class: "form-label" %>
-        <%= form.time_field :start_time, class: "form-control", required: true %>
+        <%= label_tag :start_time, "Hora de Início", class: "form-label" %>
+        <%= time_field_tag "session[start_time]", @session.start_time, class: "form-control", required: true %>
       </div>
 
       <div class="form-group">
-        <%= form.label :end_time, "Hora de Fim", class: "form-label" %>
-        <%= form.time_field :end_time, class: "form-control", required: true %>
+        <%= label_tag :end_time, "Hora de Fim", class: "form-label" %>
+        <%= time_field_tag "session[end_time]", @session.end_time, class: "form-control", required: true %>
       </div>
     </div>
 
     <div class="form-row">
       <div class="form-group full-width">
-        <%= form.label :notes, "Anotações", class: "form-label" %>
-        <%= form.text_area :notes, 
+        <%= label_tag :notes, "Anotações", class: "form-label" %>
+        <%= text_area_tag "session[notes]", @session.notes, 
             placeholder: "Anotações sobre a sessão...",
             rows: 4,
             class: "form-control" %>
@@ -79,7 +77,7 @@
 
     <div class="form-actions">
       <%= link_to "Cancelar", agenda_path, class: "btn-secondary" %>
-      <%= form.submit "Criar Sessão", class: "btn-primary" %>
+      <%= submit_tag "Criar Sessão", class: "btn-primary" %>
     </div>
   <% end %>
 </div>

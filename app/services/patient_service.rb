@@ -9,7 +9,7 @@ class PatientService
   end
 
   def find_patient(id)
-    @repository.find(id)
+    @repository.find_patient(id)
   end
 
   def create_patient(attributes)
