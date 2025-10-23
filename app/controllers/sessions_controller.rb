@@ -48,14 +48,14 @@ class SessionsController < ApplicationController
     @session = current_user.sessions.find(params[:id])
     @session.confirm!
     
-    redirect_to agenda_path(date: @session.session_date), notice: 'Sessão confirmada com sucesso!'
+    redirect_to patient_path(@session.patient), notice: 'Sessão confirmada com sucesso!'
   end
 
   def unconfirm
     @session = current_user.sessions.find(params[:id])
     @session.unconfirm!
     
-    redirect_to agenda_path(date: @session.session_date), notice: 'Confirmação removida com sucesso!'
+    redirect_to patient_path(@session.patient), notice: 'Confirmação removida com sucesso!'
   end
 
   private

@@ -103,26 +103,26 @@
           
           <!-- Content -->
           <div class="dashboard-content">
+            <% if notice %>
+              <div class="alert alert-notice alert-dismissible fade show" role="alert">
+                <%= notice %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            <% end %>
+            
+            <% if alert %>
+              <div class="alert alert-alert alert-dismissible fade show" role="alert">
+                <%= alert %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            <% end %>
+            
             <%= yield %>
           </div>
         </div>
       </div>
     <% else %>
       <%= yield %>
-    <% end %>
-    
-    <% if notice %>
-      <div class="alert alert-notice alert-dismissible fade show" role="alert">
-        <%= notice %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-    <% end %>
-    
-    <% if alert %>
-      <div class="alert alert-alert alert-dismissible fade show" role="alert">
-        <%= alert %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
     <% end %>
   </body>
 </html>

@@ -10,6 +10,20 @@
         Editar Paciente
       <% end %>
       
+      <%= link_to agenda_path, class: "btn-secondary" do %>
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 16px; height: 16px; margin-right: 8px;">
+          <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+        </svg>
+        Ver na Agenda
+      <% end %>
+      
+      <%= link_to new_appointment_path, class: "btn-success" do %>
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 16px; height: 16px; margin-right: 8px;">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        Nova Sessão
+      <% end %>
+      
       <%= link_to patients_path, class: "btn-secondary" do %>
         <svg viewBox="0 0 24 24" fill="currentColor" style="width: 16px; height: 16px; margin-right: 8px;">
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
@@ -78,31 +92,77 @@
       <div class="detail-section">
         <h3 class="section-title">Sessões</h3>
         <div class="sessions-summary">
-          <% sessions = @patient.sessions.order(session_date: :desc).limit(5) %>
-          <% if sessions.any? %>
+          <% if @sessions.any? %>
             <div class="sessions-list">
-              <% sessions.each do |session| %>
+              <% @sessions.each do |session| %>
                 <div class="session-item">
-                  <div class="session-date">
-                    <%= session.session_date.strftime("%d/%m/%Y") %>
+                  <div class="session-info">
+                    <div class="session-date">
+                      <%= session.session_date.strftime("%d/%m/%Y") %>
+                    </div>
+                    <div class="session-time">
+                      <%= session.start_time.strftime("%H:%M") %> - <%= session.end_time.strftime("%H:%M") %>
+                    </div>
+                    <div class="session-type">
+                      <%= session.session_type.capitalize %>
+                    </div>
+                    <div class="session-status">
+                      <% if session.confirmed? %>
+                        <span class="status-confirmed">✓ Confirmada</span>
+                      <% else %>
+                        <span class="status-pending">⏳ Pendente</span>
+                      <% end %>
+                    </div>
                   </div>
-                  <div class="session-time">
-                    <%= session.start_time.strftime("%H:%M") %> - <%= session.end_time.strftime("%H:%M") %>
-                  </div>
-                  <div class="session-type">
-                    <%= session.session_type.capitalize %>
-                  </div>
-                  <div class="session-status">
+                  <div class="session-actions">
+                    <%= link_to edit_appointment_path(session), class: "action-btn edit-btn", title: "Editar sessão" do %>
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                      </svg>
+                    <% end %>
+                    
                     <% if session.confirmed? %>
-                      <span class="status-confirmed">✓ Confirmada</span>
+                      <%= link_to unconfirm_appointment_path(session), method: :patch, class: "action-btn unconfirm-btn", title: "Desconfirmar sessão", data: { confirm: "Tem certeza que deseja desconfirmar esta sessão?" } do %>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                      <% end %>
                     <% else %>
-                      <span class="status-pending">⏳ Pendente</span>
+                      <%= link_to confirm_appointment_path(session), method: :patch, class: "action-btn confirm-btn", title: "Confirmar sessão", data: { confirm: "Tem certeza que deseja confirmar esta sessão?" } do %>
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                        </svg>
+                      <% end %>
+                    <% end %>
+                    
+                    <%= link_to appointment_path(session), method: :delete, class: "action-btn delete-btn", title: "Excluir sessão", data: { confirm: "Tem certeza que deseja excluir esta sessão? Esta ação não pode ser desfeita." } do %>
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                      </svg>
                     <% end %>
                   </div>
                 </div>
               <% end %>
             </div>
-            <%= link_to "Ver todas as sessões", agenda_path, class: "btn-secondary" %>
+            
+            <!-- Paginação -->
+            <% if @total_pages > 1 %>
+              <div class="pagination">
+                <% if @page > 1 %>
+                  <%= link_to "« Anterior", patient_path(@patient, page: @page - 1), class: "pagination-btn" %>
+                <% end %>
+                
+                <span class="pagination-info">
+                  Página <%= @page %> de <%= @total_pages %> 
+                  (<%= @total_sessions %> sessões)
+                </span>
+                
+                <% if @page < @total_pages %>
+                  <%= link_to "Próxima »", patient_path(@patient, page: @page + 1), class: "pagination-btn" %>
+                <% end %>
+              </div>
+            <% end %>
+            
           <% else %>
             <div class="empty-sessions">
               <svg viewBox="0 0 24 24" fill="currentColor">
