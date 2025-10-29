@@ -12,7 +12,6 @@ class PatientsController < ApplicationController
   end
 
   def show
-    # Paginação manual das sessões
     @page = params[:page].to_i.positive? ? params[:page].to_i : 1
     @per_page = 10
     @total_sessions = @patient.sessions.count
