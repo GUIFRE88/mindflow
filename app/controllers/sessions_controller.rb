@@ -14,6 +14,7 @@ class SessionsController < ApplicationController
     @session = current_user.sessions.build
     @session.session_date = params[:date] if params[:date]
     @session.start_time = params[:time] if params[:time]
+    @session.patient_id = params[:patient_id] if params[:patient_id]
   end
 
   def create
